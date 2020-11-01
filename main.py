@@ -7,7 +7,8 @@ one_vector = np.array([0,1])
 
 operations = {
     'x_gate' : qop.x_gate,
-    'h_gate' : qop.set_superposition,
+    'h_gate' : qop.h_gate,
+    'set_superposition' : qop.set_superposition,
     'measure' : qop.measure
 }
 
@@ -53,25 +54,31 @@ class Qubit:
 total_one = 0
 total_zero = 0
 
+# given_operations = ['h_gate', 'measure']
+#
+# #LIMITATIONS
+# #Runs operation on all qubits, cannot work with entangled / multi gates
+# #Cant use if statements or other logic thingies
+# qubits = {}
+# toutput = []
+# for num in range(0, 2048): #Initializes all qubit objects
+#     qubits[num] = Qubit()
+# for operation in given_operations: #Goes through each operation given
+#     for qubit in qubits.values():
+#         is_output, output = operations[operation](qubit)
+#         if is_output: #If output is important, it is recorded
+#             toutput.append(output)
+#
+# #Parse data given to toutput
+# for value in toutput:
+#     if value == 1:
+#         total_one += 1
+#     else:
+#         total_zero += 1
+#
+# print(total_one)
+# print(total_zero)
 
-given_operations = ['h_gate', 'measure']
-
-qubits = {}
-toutput = []
-for num in range(0, 1024): #Initializes all qubit objects
-    qubits[num] = Qubit()
-for operation in given_operations: #Goes through each operation given
-    for qubit in qubits.values():
-        is_output, output = operations[operation](qubit)
-        if is_output: #If output is important, it is recorded
-            toutput.append(output)
-
-for value in toutput:
-    if value == 1:
-        total_one += 1
-    else:
-        total_zero += 1
-
-print(total_one)
-print(total_zero)
-print(toutput)
+qubit1 = Qubit()
+print(qop.h_gate(qubit1))
+print(qubit1.spin)
