@@ -1,11 +1,15 @@
 import random
 import numpy as np
+import q_op as qop
 
 zero_vector = np.array([1,0])
 one_vector = np.array([0,1])
 
-x_gate = np.array([[0,1],[1,0]])
-
+operations = {
+    'x_gate' : qop.x_gate,
+    'h_gate' : qop.set_superposition,
+    'measure' : qop.measure
+}
 
 class Qubit:
     """Keeps track of all data for each qubit"""
@@ -46,11 +50,28 @@ class Qubit:
             vector = np.array([self.alpha * zero_vector, self.beta * one_vector]) #|u> = a|0> + B|1>
         return vector
 
+total_one = 0
+total_zero = 0
 
-qubit1 = Qubit()
-print(qubit1.spin)
-qubit1.set_superposition()
-print(qubit1.generate_vector())
-print(qubit1.measure_spin())
-print(qubit1.generate_vector())
-print(qubit1.generate_vector() * x_gate)
+
+given_operations = ['h_gate', 'measure']
+
+qubits = {}
+toutput = []
+for num in range(0, 1024): #Initializes all qubit objects
+    qubits[num] = Qubit()
+for operation in given_operations: #Goes through each operation given
+    for qubit in qubits.values():
+        is_output, output = operations[operation](qubit)
+        if is_output: #If output is important, it is recorded
+            toutput.append(output)
+
+for value in toutput:
+    if value == 1:
+        total_one += 1
+    else:
+        total_zero += 1
+
+print(total_one)
+print(total_zero)
+print(toutput)
